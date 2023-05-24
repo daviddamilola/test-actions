@@ -29,3 +29,22 @@ jobs:
         run: |
           echo "The last release tag is $LAST_RELEASE_TAG"
           echo "The last release tag is ${{ steps.tages_versioning.outputs}}"
+          
+      - name: Determine Tag Name
+        id: determine_tag
+        run: |
+          if [[ "${{ steps.tages_versioning.outputs.last }}" == "true" ]]; then
+            echo "::set-output name=tag_name::1.0.0"
+          else
+            echo "::set-output name=tag_name::${{ steps.tages_versioning.outputs.next }}"
+          fi
+      
+      - name: Create Release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.determine_tag.outputs.tag_name }}
+          release_name: Release ${{ steps.determine_tag.outputs.tag_name }}
+          draft: false
+          prerelease: false
+          body: |
+            Release notes for ${{ steps.determine_tag.outputs.tag_name }}
