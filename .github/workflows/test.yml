@@ -40,11 +40,34 @@ jobs:
           fi
       
       - name: Create Release
-        uses: actions/create-release@v1
+        uses: ncipollo/release-action@v1.12.0
         with:
-          tag_name: ${{ steps.determine_tag.outputs.tag_name }}
-          release_name: Release ${{ steps.determine_tag.outputs.tag_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.determine_tag.outputs.tag_name }}
+          name: Release ${{ steps.increment-release-tag.outputs.new_tag }}
           draft: false
           prerelease: false
           body: |
-            Release notes for ${{ steps.determine_tag.outputs.tag_name }}
+            Release notes for ${{ steps.increment-release-tag.outputs.new_tag }}
+
+      - name: Get Release ID
+        id: get_release_id
+        run: echo "::set-output name=release_id::${{ github.event.outputs.create_release.id }}"
+
+      - name: Use Release ID
+        run: |
+          echo "Created release with ID ${{ steps.get_release_id.outputs.release_id }}"
+In this updated workflow, the ncipollo/release-action is used for the "Create Release" step. The token input requires the secrets.GITHUB_TOKEN to authenticate with the GitHub API.
+
+The tag input is set to the output tag_name from the "Determine Tag Name" step, and the name, draft, prerelease, and body inputs are set accordingly.
+
+The "Get Release ID" step captures the release ID using the id field, and it is made available for use in subsequent steps via ${{ steps.get_release_id.outputs.release_id }}.
+
+Please ensure you have the necessary permissions and configurations in place for creating releases in your repository, and adjust the workflow as needed.
+
+
+
+
+
+
+Regenerate response
