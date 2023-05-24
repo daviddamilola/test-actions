@@ -1,7 +1,7 @@
 name: Get Last Release Tag
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -10,16 +10,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v2
+        with:
+          ref: main
+          token: ${{ secrets.PAT }}
 
       - name: Increment version from repository's tags
         id: tages_versioning
-        uses: georgeneto/tags-versioning
+        uses: georgeneto/tags-versioning@v1
         with:
-          repo-token: ${{secrets.GITHUB_TOKEN}}
+          repo-token: ${{secrets.PAT}}
 
 
       - name: Use the release tag
+        env:
+          LAST_RELEASE_TAG: ${{ steps.tages_versioning.outputs.next || '0.0.0' }}
         run: |
-          echo "The last release tag is ${{ steps.version.outputs.last }}"
+          echo "The last release tag is $LAST_RELEASE_TAG"
+          echo "The last release tag is ${{ steps.tages_versioning.outputs.next}}"
+          
+      - name: Determine Tag Name
+        id: determine_tag
+        run: |
+          if [[ -z "${{ steps.tages_versioning.outputs.last }}" ]]; then
+            echo "::set-output name=tag_name::${{ steps.tages_versioning.outputs.next }}"
+          else
+            echo "::set-output name=tag_name::1.0.0"
+          fi
+      
+      - name: Create Release
+        uses: ncipollo/release-action@v1.12.0
+        with:
+          token: ${{ secrets.PAT }}
+          tag: v${{ steps.determine_tag.outputs.tag_name }}
+          name: Release ${{ steps.increment-release-tag.outputs.new_tag }}
+          draft: false
+          prerelease: false
+          body: |
+            Release notes for ${{ steps.increment-release-tag.outputs.new_tag }}
+
+      - name: Get Release ID
+        id: get_release_id
+        run: echo "::set-output name=release_id::${{ github.event.outputs.create_release.id }}"
+
+      - name: Use Release ID
+        run: |
+          echo "Created release with ID ${{ steps.get_release_id.outputs.release_id }}"
