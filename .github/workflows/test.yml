@@ -25,10 +25,10 @@ jobs:
 
       - name: Use the release tag
         env:
-          LAST_RELEASE_TAG: ${{ steps.tages_versioning.outputs.next || '0.0.0' }}
+          LAST_RELEASE_TAG: ${{ steps.tages_versioning.outputs.last || '0.0.0' }}
         run: |
           echo "The last release tag is $LAST_RELEASE_TAG"
-          echo "The last release tag is ${{ steps.tages_versioning.outputs.next}}"
+          echo "The next release tag is ${{ steps.tages_versioning.outputs.next}}"
           
       - name: Determine Tag Name
         id: determine_tag
