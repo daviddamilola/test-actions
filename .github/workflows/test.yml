@@ -28,3 +28,4 @@ jobs:
           LAST_RELEASE_TAG: ${{ steps.version.outputs.next || '0.0.0' }}
         run: |
           echo "The last release tag is $LAST_RELEASE_TAG"
+          echo "The last release tag is ${{ steps.version.outputs}}"
