@@ -36,7 +36,7 @@ jobs:
           if [[ -n "${{ steps.tages_versioning.outputs.last}}" ]]; then
             echo "::set-output name=tag_name::${{ steps.tages_versioning.outputs.next }}"
           else
-            echo "::set-output name=tag_name::1.0.0"
+            echo "::set-output name=tag_name::V1.0.0"
           fi
       - name: see tag name
         run: echo ${{ steps.determine_tag.outputs.tag_name }}
