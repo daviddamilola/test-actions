@@ -28,7 +28,7 @@ jobs:
           LAST_RELEASE_TAG: ${{ steps.tages_versioning.outputs.next || '0.0.0' }}
         run: |
           echo "The last release tag is $LAST_RELEASE_TAG"
-          echo "The last release tag is ${{ steps.tages_versioning.outputs}}"
+          echo "The last release tag is ${{ steps.tages_versioning.outputs.next}}"
           
       - name: Determine Tag Name
         id: determine_tag
