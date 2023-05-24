@@ -33,7 +33,7 @@ jobs:
       - name: Determine Tag Name
         id: determine_tag
         run: |
-          if [[ "${{ steps.tages_versioning.outputs.last }}" == "true" ]]; then
+          if [[ "${{ steps.tages_versioning.outputs.last }}" !== "true" ]]; then
             echo "::set-output name=tag_name::1.0.0"
           else
             echo "::set-output name=tag_name::${{ steps.tages_versioning.outputs.next }}"
