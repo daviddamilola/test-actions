@@ -42,7 +42,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1.12.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
           tag: ${{ steps.determine_tag.outputs.tag_name }}
           name: Release ${{ steps.increment-release-tag.outputs.new_tag }}
           draft: false
