@@ -10,14 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v2
         with:
-          token: ${{secrets.PAT}}
+          ref: main
+          token: ${{ secrets.PAT }}
 
       - name: Increment version from repository's tags
         id: tages_versioning
-        uses: georgeneto/tags-versioning
+        uses: georgeneto/tags-versioning@v1
         with:
           repo-token: ${{secrets.PAT}}
 
