@@ -15,7 +15,7 @@ jobs:
         with:
           ref: main
           token: ${{ secrets.PAT }}
-          fetch-depth: 2
+          fetch-depth: 100
 
       
       - name: Get changed files in the mobile folder
