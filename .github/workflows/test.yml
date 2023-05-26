@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         with:
-          ref: develop
+          ref: main
           token: ${{ secrets.PAT }}
 
       - name: Check for changes in 'apps/mobile/**'
