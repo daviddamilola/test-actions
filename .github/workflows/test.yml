@@ -1,4 +1,4 @@
-name: Get Last Release Tag
+name: Get Last Release Tag changed
 
 on:
   pull_request:
